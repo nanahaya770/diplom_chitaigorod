@@ -41,3 +41,18 @@ def test_search_box(driver):
     assert element.text == (
         f'Поиск по запросу «{UNKNOWN_BOOK}» не принёс результатов'
     )
+
+
+def test_add_book_to_cart(driver):
+    driver.get("https://www.chitai-gorod.ru/product/bukvar-uchebnoe-posobie-94503")
+    driver.find_element(
+        By.XPATH, '//*[@id="__nuxt"]/div/div[3]/div[1]/div/main/aside/div[2]'
+        '/header/div/div[2]/button[1]').click()
+    time.sleep(5)
+
+    count = driver.find_element(
+            By.XPATH,
+            '//*[@id="__nuxt"]/div/header/div/div[2]/button[3]/span[1]/div'
+        )
+
+    assert count.text == "1"
