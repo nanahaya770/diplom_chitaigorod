@@ -11,7 +11,7 @@ import pytest
 UNKNOWN_BOOK = "рмюлмгюша"
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def driver():
     service = ChromeService(ChromeDriverManager().install())
     driver: WebDriver = webdriver.Chrome(service=service)
@@ -56,3 +56,13 @@ def test_add_book_to_cart(driver):
         )
 
     assert count.text == "1"
+
+
+def test_book_in_cart(driver):
+    driver.get("https://www.chitai-gorod.ru/cart")
+    count = WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located((By.CSS_SELECTOR,
+        '#__nuxt > div > div.app-wrapper__content > div:nth-child(1) > div > div > div.cart-page__cart-content > div.cart-page__cart-content--right > div > div:nth-child(2) > section.cart-sidebar__info > div:nth-child(1) > div.info-item__title'))
+    )
+
+    assert count.text == "1 товар"
