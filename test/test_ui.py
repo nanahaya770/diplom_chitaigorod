@@ -118,15 +118,26 @@ def test_recover_cart(driver):
 
     driver.find_element(By.CSS_SELECTOR, button_recover).click()
 
-    count = WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located((
+    waiter = WebDriverWait(driver, 10)
+
+    waiter.until(
+        EC.text_to_be_present_in_element((
             By.CSS_SELECTOR,
             '#__nuxt > div > div.app-wrapper__content > div:nth-child(1) > '
             'div > div > div.cart-page__cart-content > '
             'div.cart-page__cart-content--right > div > div:nth-child(2) > '
             'section.cart-sidebar__info > '
             'div:nth-child(1) > div.info-item__title'
-        ))
+        ), "1 товар")
     )
+
+    count = driver.find_element(
+        By.CSS_SELECTOR,
+        '#__nuxt > div > div.app-wrapper__content > div:nth-child(1) > '
+        'div > div > div.cart-page__cart-content > '
+        'div.cart-page__cart-content--right > div > div:nth-child(2) > '
+        'section.cart-sidebar__info > '
+        'div:nth-child(1) > div.info-item__title')
+    # time.sleep(5)
 
     assert count.text == "1 товар"
