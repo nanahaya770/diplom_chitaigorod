@@ -1,4 +1,3 @@
-import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.webdriver import WebDriver
@@ -57,12 +56,13 @@ def test_add_book_to_cart(driver):
     driver.find_element(
         By.XPATH, '//*[@id="__nuxt"]/div/div[3]/div[1]/div/main/aside/div[2]'
         '/header/div/div[2]/button[1]').click()
-    time.sleep(5)
 
-    count = driver.find_element(
+    count = WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located((
             By.XPATH,
             '//*[@id="__nuxt"]/div/header/div/div[2]/button[3]/span[1]/div'
-        )
+        ))
+    )
 
     assert count.text == "1"
 
@@ -94,8 +94,6 @@ def test_empty_cart(driver):
 
     driver.find_element(By.CLASS_NAME, 'cart-page__delete-many').click()
 
-    time.sleep(10)
-
     empty_cart = WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located((
             By.CLASS_NAME, 'cart-multiple-delete__title'
@@ -119,8 +117,6 @@ def test_recover_cart(driver):
         )
 
     driver.find_element(By.CSS_SELECTOR, button_recover).click()
-
-    time.sleep(2)
 
     count = WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located((
