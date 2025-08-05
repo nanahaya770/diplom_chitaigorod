@@ -6,8 +6,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pytest
-
-UNKNOWN_BOOK = "рмюлмгюша"
+from conftest import UNKNOWN_BOOK
 
 
 @pytest.fixture(scope='module')
@@ -119,25 +118,17 @@ def test_recover_cart(driver):
     driver.find_element(By.CSS_SELECTOR, button_recover).click()
 
     waiter = WebDriverWait(driver, 10)
-
-    waiter.until(
-        EC.text_to_be_present_in_element((
-            By.CSS_SELECTOR,
-            '#__nuxt > div > div.app-wrapper__content > div:nth-child(1) > '
-            'div > div > div.cart-page__cart-content > '
-            'div.cart-page__cart-content--right > div > div:nth-child(2) > '
-            'section.cart-sidebar__info > '
-            'div:nth-child(1) > div.info-item__title'
-        ), "1 товар")
-    )
-
-    count = driver.find_element(
-        By.CSS_SELECTOR,
+    count_selector = (
         '#__nuxt > div > div.app-wrapper__content > div:nth-child(1) > '
         'div > div > div.cart-page__cart-content > '
         'div.cart-page__cart-content--right > div > div:nth-child(2) > '
         'section.cart-sidebar__info > '
-        'div:nth-child(1) > div.info-item__title')
-    # time.sleep(5)
+        'div:nth-child(1) > div.info-item__title'
+    )
+    waiter.until(
+        EC.text_to_be_present_in_element(
+            (By.CSS_SELECTOR, count_selector),  "1 товар")
+    )
+    count = driver.find_element(By.CSS_SELECTOR, count_selector)
 
     assert count.text == "1 товар"

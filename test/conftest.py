@@ -1,6 +1,8 @@
 from dotenv import load_dotenv
 import os
 
+
+# test_api.py
 load_dotenv()
 
 bearer_token = os.getenv('BEARER_TOKEN')
@@ -20,3 +22,7 @@ BOOK_NAME = "танах"
 BASE_URL = "https://web-agr.chitai-gorod.ru/web"
 
 BODY_AD_DATA = {"product_shelf": "", "item_list_name": "search"}
+
+
+# test_ui.py
+UNKNOWN_BOOK = "рмюлмгюша"
