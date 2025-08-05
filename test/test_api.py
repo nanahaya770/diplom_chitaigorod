@@ -1,30 +1,13 @@
 import requests
 import pytest
-
-
-BEARER_TOKEN = (
-    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOj'
-    'E3NTQ0NzM3OTMsImlhdCI6MTc1NDMwNTc5MywiaXNzIjoiL2FwaS92'
-    'MS9hdXRoL2Fub255bW91cyIsInN1YiI6IjBiNDgyNGI3YWQyNWJmNT'
-    'Y1MTVmZDEwNjM2MmMyNjc1MzVhZDQxYjI3NThjM2M4NTkzNzg0YWQ0'
-    'MzY0NWIxZTYiLCJ0eXBlIjoxMH0.JY7u2Z4dKTAl_Zb9LlgxyYarWBI7PDHkFPOHmZ40dPY'
+from conftest import (
+    HEADERS,
+    BOOK_ID_IN_CART,
+    BASE_URL,
+    BOOK1_ID_IN_CATALOG,
+    BOOK2_ID_IN_CATALOG,
+    BOOK_NAME
 )
-HEADERS = {
-      'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
-      'AppleWebKit/537.36 (KHTML, like Gecko) '
-      'Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0',
-      'Authorization': BEARER_TOKEN
-    }
-
-BOOK_ID_IN_CART = 215975836
-
-BASE_URL = "https://web-agr.chitai-gorod.ru/web"
-
-BOOK1_ID_IN_CATALOG = 2968841
-
-BOOK2_ID_IN_CATALOG = 2713476
-
-BOOK_NAME = "танах"
 
 
 @pytest.fixture
