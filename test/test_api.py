@@ -6,7 +6,8 @@ from conftest import (
     BASE_URL,
     BOOK1_ID_IN_CATALOG,
     BOOK2_ID_IN_CATALOG,
-    BOOK_NAME
+    BOOK_NAME,
+    BODY_AD_DATA
 )
 
 
@@ -33,8 +34,8 @@ def delete_book_from_cart():
 def add_book_to_cart():
     URL = f'{BASE_URL}/api/v1/cart/product'
     body = {
-        "id": BOOK1_ID_IN_CATALOG, "adData":
-        {"product_shelf": "", "item_list_name": "search"}
+        "id": BOOK1_ID_IN_CATALOG,
+        "adData": BODY_AD_DATA
     }
     requests.post(URL, headers=HEADERS, json=body)
 
@@ -44,8 +45,8 @@ def add_book_to_cart():
 def test_add_book(delete_book_from_cart):
     URL = f'{BASE_URL}/api/v1/cart/product'
     body = {
-        "id": BOOK1_ID_IN_CATALOG, "adData":
-        {"product_shelf": "", "item_list_name": "search"}
+        "id": BOOK1_ID_IN_CATALOG,
+        "adData": BODY_AD_DATA
     }
     response = requests.post(URL, headers=HEADERS, json=body)
     assert response.status_code == 200
@@ -66,8 +67,8 @@ def test_get_by_keyword() -> None:
       f'[page]=1&products[per-page]=60&phrase={BOOK_NAME}&abTestGroup=1'
     )
     body = {
-        "id": 2968841, "adData":
-        {"product_shelf": "", "item_list_name": "search"}
+        "id": BOOK1_ID_IN_CATALOG,
+        "adData": BODY_AD_DATA
     }
     response = requests.get(URL, headers=HEADERS, json=body)
     assert response.status_code == 200
@@ -83,18 +84,18 @@ def test_total_cost(clear_cart):
     # добавление двух книг
     URL = f'{BASE_URL}/api/v1/cart/product'
     body = {
-        "id": BOOK1_ID_IN_CATALOG, "adData":
-        {"product_shelf": "", "item_list_name": "search"}
+        "id": BOOK1_ID_IN_CATALOG,
+        "adData": BODY_AD_DATA
     }
-
     requests.post(URL, headers=HEADERS, json=body)
+
     body = {
-        "id": BOOK2_ID_IN_CATALOG, "adData":
-        {"product_shelf": "", "item_list_name": "search"}
+        "id": BOOK2_ID_IN_CATALOG,
+        "adData": BODY_AD_DATA
     }
     requests.post(URL, headers=HEADERS, json=body)
 
-    # получение карзины
+    # получение корзины
     URL = f'{BASE_URL}/api/v1/cart'
     response = requests.request("GET", URL, headers=HEADERS)
 

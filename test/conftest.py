@@ -18,5 +18,5 @@ BOOK2_ID_IN_CATALOG = 2713476
 BOOK_NAME = "танах"
 
 BASE_URL = "https://web-agr.chitai-gorod.ru/web"
-URL = f'{BASE_URL}/api/v1/cart'
-URL = f'{BASE_URL}/api/v1/cart/product/{BOOK_ID_IN_CART}'
+
+BODY_AD_DATA = {"product_shelf": "", "item_list_name": "search"}
