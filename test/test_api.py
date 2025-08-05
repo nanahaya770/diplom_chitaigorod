@@ -3,11 +3,11 @@ import pytest
 
 
 BEARER_TOKEN = (
-    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3'
-    'NTM5Njc0ODQsImlhdCI6MTc1Mzc5OTQ4NCwiaXNzIjoiL2FwaS92MS9h'
-    'dXRoL2Fub255bW91cyIsInN1YiI6ImZmNGQ0ZjI2ZGM4MjQwMDA2NTNj'
-    'YmZiMWE0MWE1ZDRkNDUyMGZmZWZhMWI0MTk1YWE2MGNlYzE0OWIzMDEy'
-    'MzAiLCJ0eXBlIjoxMH0.Lv63O0Ij8j7bQNucoNN2WzeiP382R7p_FmyYcl8WPtg'
+    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOj'
+    'E3NTQ0NzM3OTMsImlhdCI6MTc1NDMwNTc5MywiaXNzIjoiL2FwaS92'
+    'MS9hdXRoL2Fub255bW91cyIsInN1YiI6IjBiNDgyNGI3YWQyNWJmNT'
+    'Y1MTVmZDEwNjM2MmMyNjc1MzVhZDQxYjI3NThjM2M4NTkzNzg0YWQ0'
+    'MzY0NWIxZTYiLCJ0eXBlIjoxMH0.JY7u2Z4dKTAl_Zb9LlgxyYarWBI7PDHkFPOHmZ40dPY'
 )
 HEADERS = {
       'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
@@ -16,7 +16,7 @@ HEADERS = {
       'Authorization': BEARER_TOKEN
     }
 
-BOOK_ID_IN_CART = 214865377
+BOOK_ID_IN_CART = 215975836
 
 BASE_URL = "https://web-agr.chitai-gorod.ru/web"
 
