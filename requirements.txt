@@ -2,6 +2,5 @@ pytest
 selenium
 webdriver-manager
 requests
-allure-pytest
-faker
 flake8
+allure-pytest

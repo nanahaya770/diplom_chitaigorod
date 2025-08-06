@@ -1,3 +1,4 @@
+from typing import Generator
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.webdriver import WebDriver
@@ -6,11 +7,12 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pytest
+import allure
 from conftest import UNKNOWN_BOOK
 
 
 @pytest.fixture(scope='module')
-def driver():
+def driver() -> Generator[WebDriver, None]:
     """
     Фикстура открывает браузер
     """
@@ -21,9 +23,13 @@ def driver():
     driver.quit()
 
 
-def test_search_box(driver):
+@allure.story("Проверка поиска книги по названию")
+def test_search_box(driver: Generator[WebDriver, None]) -> None:
     """
-    Функция проверят поис книги
+    Функция проверяет работу поисковой строки,
+    вводит название несуществующей книги и проверяет что
+    поиск не принес результата
+
     """
     driver.get("https://www.chitai-gorod.ru")
 
@@ -38,13 +44,13 @@ def test_search_box(driver):
     element = WebDriverWait(driver, 3).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'search-title'))
     )
-    assert element is not None, "Элемент не найден на странице"
     assert element.text == (
         f'Поиск по запросу «{UNKNOWN_BOOK}» не принёс результатов'
     )
 
 
-def test_add_book_to_cart(driver):
+@allure.story("Проверка отображения количества товаров у иконки корзины")
+def test_add_book_to_cart(driver: WebDriver) -> None:
     """
     Функция проверяет появление цыфры 1 у значка пустой корзины,
     после нажатия на кнопку 'Купить'
@@ -66,10 +72,11 @@ def test_add_book_to_cart(driver):
     assert count.text == "1"
 
 
-def test_book_in_cart(driver):
+@allure.story("Проверка корректности подсчета количества товаров в корзине")
+def test_book_in_cart(driver: WebDriver) -> None:
     """
     Функция проверяет правильность подчета
-    итогового количества товара в корзине
+    итогового количества товаров в корзине
     """
     driver.get("https://www.chitai-gorod.ru/cart")
     count = WebDriverWait(driver, 10).until(
@@ -86,7 +93,8 @@ def test_book_in_cart(driver):
     assert count.text == "1 товар"
 
 
-def test_empty_cart(driver):
+@allure.story("Проверка кнопки 'очистить корзину'")
+def test_empty_cart(driver: WebDriver) -> None:
     """
     Функция проверяет кнопку очистки корзины
     """
@@ -102,7 +110,8 @@ def test_empty_cart(driver):
     assert empty_cart.text == "Корзина очищена"
 
 
-def test_recover_cart(driver):
+@allure.story("Проверка кнопки 'востановить корзину'")
+def test_recover_cart(driver: WebDriver) -> None:
     """
     Функция проверяет кнопку востановления корзины
     """

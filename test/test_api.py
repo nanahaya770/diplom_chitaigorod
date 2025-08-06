@@ -1,8 +1,9 @@
+from typing import Generator
 import requests
 import pytest
+import allure
 from conftest import (
     HEADERS,
-    BOOK_ID_IN_CART,
     BASE_URL,
     BOOK1_ID_IN_CATALOG,
     BOOK2_ID_IN_CATALOG,
@@ -12,7 +13,16 @@ from conftest import (
 
 
 @pytest.fixture
-def clear_cart():
+def get_book_id_from_cart(add_book_to_cart: Generator) -> int:
+    URL = f'{BASE_URL}/api/v1/cart'
+    # получение карзины
+    response = requests.request("GET", URL, headers=HEADERS)
+    book_id = response.json()["products"][0]['id']
+    return book_id
+
+
+@pytest.fixture
+def clear_cart() -> Generator:
     URL = f'{BASE_URL}/api/v1/cart'
     requests.request("DELETE", URL, headers=HEADERS)
     yield
@@ -20,9 +30,10 @@ def clear_cart():
 
 
 @pytest.fixture
-def delete_book_from_cart():
+def delete_book_from_cart(get_book_id_from_cart) -> Generator:
     # действия до вызова тестовой функции
-    URL = f'{BASE_URL}/api/v1/cart/product/{BOOK_ID_IN_CART}'
+    book_id = get_book_id_from_cart
+    URL = f'{BASE_URL}/api/v1/cart/product/{book_id}'
 
     yield
 
@@ -31,7 +42,7 @@ def delete_book_from_cart():
 
 
 @pytest.fixture
-def add_book_to_cart():
+def add_book_to_cart() -> Generator:
     URL = f'{BASE_URL}/api/v1/cart/product'
     body = {
         "id": BOOK1_ID_IN_CATALOG,
@@ -42,7 +53,12 @@ def add_book_to_cart():
     yield
 
 
-def test_add_book(delete_book_from_cart):
+@allure.story("Проверка добавления книги в корзину")
+def test_add_book(delete_book_from_cart: Generator) -> None:
+    """
+    Функция добавляет книгу в корзину,
+    и проверяет что запрос выполнен
+    """
     URL = f'{BASE_URL}/api/v1/cart/product'
     body = {
         "id": BOOK1_ID_IN_CATALOG,
@@ -52,7 +68,12 @@ def test_add_book(delete_book_from_cart):
     assert response.status_code == 200
 
 
+@allure.story("Проверка получение пустой корзины")
 def test_get_cart() -> None:
+    """
+    Функция получает корзину,
+    проверет что запрос выполнен и корзина пустая
+    """
     URL = f'{BASE_URL}/api/v1/cart'
     # получение карзины
     response = requests.request("GET", URL, headers=HEADERS)
@@ -60,7 +81,12 @@ def test_get_cart() -> None:
     assert response.json()["products"] == []
 
 
+@allure.story("Проверка получения товара по ключевому слову")
 def test_get_by_keyword() -> None:
+    """
+    Функция вводит ключевое слово в поисковую строку и
+    проверяет, что запрос выполнен
+    """
     URL = (
       f'{BASE_URL}'
       '/api/v2/search/product?customerCityId=213&products'
@@ -74,13 +100,27 @@ def test_get_by_keyword() -> None:
     assert response.status_code == 200
 
 
-def test_delete_book_from_cart(add_book_to_cart) -> None:
-    URL = f'{BASE_URL}/api/v1/cart/product/{BOOK_ID_IN_CART}'
+@allure.story("Проверка удаления книги из корзины")
+def test_delete_book_from_cart(
+    get_book_id_from_cart: int,
+    add_book_to_cart: Generator
+) -> None:
+    """
+    Функция удаляет книгу из корзины и
+    проверяет, что запрос выполнен
+    """
+    book_id = get_book_id_from_cart
+    URL = f'{BASE_URL}/api/v1/cart/product/{book_id}'
     response = requests.request("DELETE", URL, headers=HEADERS)
     assert response.status_code == 204
 
 
-def test_total_cost(clear_cart):
+@allure.story("Проверка общей стоимости корзины")
+def test_total_cost(clear_cart: Generator) -> None:
+    """
+    Функция добавляет две книги в корзину, складывает сумму
+    стоимости книг и сверяет с итоговой суммой
+    """
     # добавление двух книг
     URL = f'{BASE_URL}/api/v1/cart/product'
     body = {

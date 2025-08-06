@@ -14,7 +14,6 @@ HEADERS = {
       'Authorization': bearer_token
     }
 
-BOOK_ID_IN_CART = 215975836
 BOOK1_ID_IN_CATALOG = 2968841
 BOOK2_ID_IN_CATALOG = 2713476
 BOOK_NAME = "танах"
